@@ -20,8 +20,8 @@
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>onto</string>
-		<string>ont</string>
+		<string>ontoprovider</string>
+		<string>ontprovider</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

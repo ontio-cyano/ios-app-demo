@@ -17,7 +17,7 @@ Add the following code
 ```
 <key>LSApplicationQueriesSchemes</key> 
   <array> 
-  <string>ont</string> 
+  <string>ontprovider</string> 
 </array>
 ```
 
@@ -26,7 +26,7 @@ Add the following code
 ```
 <key>LSApplicationQueriesSchemes</key> 
   <array> 
-  <string>onto</string> 
+  <string>ontoprovider</string> 
 </array>
 ```
 

@@ -41,8 +41,8 @@
 }
 
 - (void)ceshiLogin{
-    BOOL isCanOpenCyano = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"ont://com.github.cyano?data="]];
-    BOOL isCanOpenONTO = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"onto://com.github.onto?data="]];
+    BOOL isCanOpenCyano = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"ontprovider://ont.io?param="]];
+    BOOL isCanOpenONTO = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"ontoprovider://ont.io?param="]];
     
     // 只安装了 cyano
     if (isCanOpenCyano && !isCanOpenONTO) {
@@ -99,8 +99,8 @@
 }
 
 - (void)ceshiInvoke{
-    BOOL isCanOpenCyano = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"ont://com.github.cyano?data="]];
-    BOOL isCanOpenONTO = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"onto://com.github.onto?data="]];
+    BOOL isCanOpenCyano = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"ontprovider://ont.io?param="]];
+    BOOL isCanOpenONTO = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"ontoprovider://ont.io?param="]];
     
     // 只安装了 cyano
     if (isCanOpenCyano && !isCanOpenONTO) {
@@ -171,9 +171,9 @@
                                 };
     
     NSString *str =  [self convertToJsonData:dic];
-    NSString * baseString = [self base64EncodeString:str];
-    NSString *urlString = [NSString stringWithFormat:@"ont://com.github.cyano?data=%@",baseString];
-    NSLog(@"%@",urlString);
+    NSString *uriencodingString = [self encodeString:str];
+    NSString *baseString = [self base64EncodeString:uriencodingString];
+    NSString *urlString = [NSString stringWithFormat:@"ontprovider://ont.io?param=%@",baseString];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:^(BOOL success) {
         
     }];
@@ -193,8 +193,9 @@
                            };
     
     NSString *str =  [self convertToJsonData:dic];
-    NSString * baseString = [self base64EncodeString:str];
-    NSString *urlString = [NSString stringWithFormat:@"ont://com.github.cyano?data=%@",baseString];
+    NSString *uriencodingString = [self encodeString:str];
+    NSString *baseString = [self base64EncodeString:uriencodingString];
+    NSString *urlString = [NSString stringWithFormat:@"ontprovider://ont.io?param=%@",baseString];
     NSLog(@"%@",urlString);
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:^(BOOL success) {
         
@@ -216,8 +217,9 @@
                                 };
     
     NSString *str =  [self convertToJsonData:dic];
-    NSString * baseString = [self base64EncodeString:str];
-    NSString *urlString = [NSString stringWithFormat:@"onto://com.github.onto?data=%@",baseString];
+    NSString *uriencodingString = [self encodeString:str];
+    NSString *baseString = [self base64EncodeString:uriencodingString];
+    NSString *urlString = [NSString stringWithFormat:@"ontoprovider://ont.io?param=%@",baseString];
     NSLog(@"%@",urlString);
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:^(BOOL success) {
         
@@ -238,8 +240,9 @@
                            };
     
     NSString *str =  [self convertToJsonData:dic];
-    NSString * baseString = [self base64EncodeString:str];
-    NSString *urlString = [NSString stringWithFormat:@"onto://com.github.onto?data=%@",baseString];
+    NSString *uriencodingString = [self encodeString:str];
+    NSString *baseString = [self base64EncodeString:uriencodingString];
+    NSString *urlString = [NSString stringWithFormat:@"ontoprovider://ont.io?param=%@",baseString];
     NSLog(@"%@",urlString);
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:^(BOOL success) {
         
@@ -274,5 +277,23 @@
     
     return [data base64EncodedStringWithOptions:0];
     
+}
+
+- (NSString*)encodeString:(NSString*)unencodedString{
+    
+    // CharactersToBeEscaped = @":/?&=;+!@#$()~',*";
+    // CharactersToLeaveUnescaped = @"[].";
+    
+//    NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+//                                                                                                    (CFStringRef)unencodedString,
+//                                                                                                    NULL,
+//                                                                                                    (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+//                                                                                                    kCFStringEncodingUTF8));
+    
+    NSString *charactersToEscape = @"?!@#$^&%*+,:;='\"`<>()[]{}/\\| ";
+    NSCharacterSet *allowedCharacters = [[NSCharacterSet characterSetWithCharactersInString:charactersToEscape] invertedSet];
+    NSString *encodedUrl = [unencodedString stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
+    NSLog(@"\n%@\n%@",encodedUrl,unencodedString);
+    return encodedUrl;
 }
 @end
